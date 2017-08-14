@@ -2,7 +2,7 @@ module Map_Generator
   class Height_Map < Generator
     extend Helpers::Math
     class << self
-
+      
       def main(map_array)
         ground_level = map_array.max_height / 4
         fuzzy = map_array.max_height / 8
