@@ -11,12 +11,11 @@ module Map_Generator
 
       def fields(**args)
         args.each do |name,type|
-          field(name,type)
+          field(name,{type: type})
         end
       end
       
-      #TODO:should be able to define default values and add options, for example is_array: true or somthing
-      def field(name,type=String)
+      def field(name,type:String,default:nil,container:nil)
         @fields[name] = type  
         define_instance_method(:"%s=" % name) do |value|
           instance_variable_set(:"@%" % name,value)
@@ -27,9 +26,15 @@ module Map_Generator
       end
 
       def create(from_file)
-        @bject = self.new
+        @fields.each_with_object(self.new) do |(name,opts),object|
+          object.instance_variable_set(:"@%s" % name, callable(opts[:default],object))
+        end
       end
       
+
+      def callable(def_value,object)
+        def_value.respond_to?(:call) ? object.instance_eval(&def_value) : def_value
+      end
     end
     
     def self.extended(base)
