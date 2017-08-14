@@ -1,0 +1,43 @@
+#!/usr/local ruby
+require 'rubygems'
+require 'commander'
+
+module Map_Generator
+  class CLI
+    include Commander::Methods
+
+    def run
+      headers
+      default_command :help
+
+      command :world do |c|
+        c.syntax = "generate world"
+        c.description = "generates a world map"
+        # c.options "--type ALG", String, "Algarithm to generate the map"
+        c.action do |args, options|
+          puts 'foo'
+        end
+      end
+      
+      command :load do |c|
+        c.syntax = "load map"
+        c.description = "Loads a map from a file"
+        c.action do |args, options|
+          puts 'foo'
+        end
+      end
+
+
+    end
+
+
+    def headers
+      program :name,        Meta::Name
+      program :version,     Meta::Version
+      program :description, Meta::Description
+    end
+  end
+end
+
+
+Map_Generator::CLI.new.run if $0 == __FILE__
