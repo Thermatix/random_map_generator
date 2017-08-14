@@ -15,20 +15,25 @@ module Map_Generator
         end
       end
       
+      #should be able to define default values and add options, for example is_array: true or somthing
       def field(name,type=String)
         @fields[name] = type  
         define_instance_method(:"%s=" % name) do |value|
           instance_variable_set(:"@%" % name,value)
         end
         define_instance_method(:"%s" % name) do
-          instance_variable_get(:"@%" % name)
+          instance_variable_get(:"@%" % name) 
         end
+      end
+
+      def create(from_file)
+        @bject = self.new
       end
       
     end
     
     def self.extended(base)
-      base.extend(base)
+      base.extend(Singleton_Methods)
       base.instance_variable_set(:@fields,{})
     end
 
