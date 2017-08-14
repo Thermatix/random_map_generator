@@ -6,14 +6,14 @@ module Map_Generator
       def main(map_array)
         ground_level = map_array.max_height / 4
         fuzzy = map_array.max_height / 8
-        step_size = map_array.max_x - 1
+        step_size = map_array.size_x - 1
         fzy = rand_value(ground_level,fuzzy)
         seed_corner(map_array,ground_level,fuzzy)
         cords = {
           x1:0,
           y1:0,
-          x2:map_array.max_x,
-          y2:map_array.max_y
+          x2:map_array.size_x,
+          y2:map_array.size_y
         }
         step(map_array,step_size,fzy,cords)
 
@@ -28,9 +28,9 @@ module Map_Generator
 
       def seed_corner(map_array,height,fuzzy)
         map_array[0][0] = rand_value(height,fuzzy)
-        map_array[map_array.max_x][0] = rand_value(height,fuzzy)
-        map_array[0][map_array.max_y] = rand_value(height,fuzzy)
-        map_array[map_array.max_x][map_array.max_y] = rand_value(height,fuzzy)
+        map_array[map_array.size_x][0] = rand_value(height,fuzzy)
+        map_array[0][map_array.size_y] = rand_value(height,fuzzy)
+        map_array[map_array.size_x][map_array.size_y] = rand_value(height,fuzzy)
       end
 
       def diamond_step(map_array,step_size,fzy,cords)
