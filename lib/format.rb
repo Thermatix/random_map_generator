@@ -15,7 +15,7 @@ module Map_Generator
         end
       end
       
-      #should be able to define default values and add options, for example is_array: true or somthing
+      #TODO:should be able to define default values and add options, for example is_array: true or somthing
       def field(name,type=String)
         @fields[name] = type  
         define_instance_method(:"%s=" % name) do |value|
