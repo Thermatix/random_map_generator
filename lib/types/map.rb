@@ -1,18 +1,43 @@
+require 'colorize'
 module Map_Generator
   module Types
     class Map
       include Format    
       fields size_x: Integer,size_y: Integer, max_height: Integer
-      fields tile_map: Tiles
+      fields tile_atlas: Tile
 
-      field :size_x, type: Integer, default: 100
-      field :size_y, type: Integer, default: 100
+      field :size_x, type: Integer, default: 25
+      field :size_y, type: Integer, default: 25
       field :max_height, type: Integer, default: 256
-      field :Height_Map, Type: Integer, container: Array, default: -> {
-        Array.new(@size_x,Array.new(@size_y,[]))
+      field :height_Map, type: Integer, container: Array, accessors: false, default: -> {
+        Array.new(@size_x,Array.new(@size_y,0))
       }
 
+    def [](index)
+      @height_Map[index]
+    end
 
+    def []=(index,val)
+      @height_Map[index] = val
+    end
+
+    def display
+      char = ' '
+      @height_Map.map do |row|
+        row.map do |col|
+          case true
+          when col > 16
+            char.colorize(:yellow).on_yellow
+          when col > 32
+            ','.colorize(:green).on_dark_green
+          when col > 64
+            ','.colorize(:light_green).on_green
+          else
+            char.colorize(:light_blue).on_light_blue
+          end
+        end
+      end
+    end
      
     end
   end

@@ -8,16 +8,41 @@ class Object
     super
   end
 
-  module Class_Methods
-  
+  def const_missing(const)
+    puts "loading(in Object) %s" % const.to_s
+    path = const.to_s.split('::').compact.map(&:downcase).join('/') 
+    require path
+    self.const_get(const)
+  end
+  class << self
     def const_missing(const)
-      puts "loading %s" % name.to_s
-      path = name.to_s.split('::').compact.map(&:downcase).join('/') 
+      puts "loading(in Object class << self) %s" % const.to_s
+      path = const.to_s.split('::').compact.map(&:downcase).join('/') 
       require path
-      self.const_get(name)
+      self.const_get(const)
+    end
+  end
+  module Class_Methods
+    class << self
+      def const_missing(const)
+        puts "loading(in Class_Methods class << self) %s" % const.to_s
+        path = const.to_s.split('::').compact.map(&:downcase).join('/') 
+        require path
+        self.const_get(const)
+      end
+    end
+
+
+
+    def const_missing(const)
+      puts "loading(in Class_Methods) %s" % const.to_s
+      path = const.to_s.split('::').compact.map(&:downcase).join('/') 
+      require path
+      self.const_get(const)
     end
 
   end
 
   extend Class_Methods
 end
+

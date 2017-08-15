@@ -28,29 +28,29 @@ module Map_Generator
 
       def seed_corner(map_array,height,fuzzy)
         map_array[0][0] = rand_value(height,fuzzy)
-        map_array[map_array.size_x][0] = rand_value(height,fuzzy)
-        map_array[0][map_array.size_y] = rand_value(height,fuzzy)
-        map_array[map_array.size_x][map_array.size_y] = rand_value(height,fuzzy)
+        map_array[map_array.size_x - 1][0] = rand_value(height,fuzzy)
+        map_array[0][map_array.size_y - 1] = rand_value(height,fuzzy)
+        map_array[map_array.size_x - 1][map_array.size_y - 1] = rand_value(height,fuzzy)
       end
 
       def diamond_step(map_array,step_size,fzy,cords)
         x = cords[:x1] + step_size
         y = cords[:y1] + step_size
-        while x < cords[:x2] do
-          while y < cords[:y2] do
+        while x > 0 do
+          while y > 0 do
             avg = Mean(get_corner_values(map_array,x,y,step_size))
             map_array[x - step_size / 2][y - step_size / 2] = avg + fzy
-            x += step_size
-            y += step_size
+            x -= step_size
+            y -= step_size
           end
         end
       end
 
-      def square_step(map_array)
-        x = cords[:x1] + 2 * step_size
-        y = cords[:y1] + 2 * step_size
-        while x < cords[:x2] do
-          while y < cords[:y2] do
+      def square_step(map_array,step_size,fzy,cords)
+        x = cords[:x1] + 2 / step_size
+        y = cords[:y1] + 2 / step_size
+        while x > 0 do
+          while y > 0 do
             a,b,c,_ = get_corner_values(map_array,x,y,step_size)
             e = map_array[x - step_size / 2][y - step_size / 2]
             map_array[x - step_size][y - step_size / 2] = 

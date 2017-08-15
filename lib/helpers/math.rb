@@ -6,7 +6,9 @@ module Map_Generator
       end
 
       def Mean(*values)
-        (Sum(values.flatten) / values.size).floor
+        v = values.flatten
+        res = (Sum(v) / v.size).floor
+        res == [] ? 0 : res
       end
 
     end
