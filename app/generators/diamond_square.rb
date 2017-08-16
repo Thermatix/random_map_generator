@@ -15,16 +15,24 @@ module Map_Generator
         cords = {
           x1:0,
           y1:0,
-          x2:map_array.size_x,
-          y2:map_array.size_y
+          x2:map_array.size_x - 1,
+          y2:map_array.size_y - 1
         }
+        @step = 1
         step(map_array,step_size,fzy,cords)
 
       end
 
       def step(map_array,step_size,fzy,cords)
+        puts @step 
+        map_array.display.each do |row|
+          puts row.join('')
+        end
+        @step += 1
         return map_array unless step_size[:x] > 0 && step_size[:y] > 0
+        puts "diamond"
         diamond_step(map_array,step_size,fzy,cords)
+        puts "square"
         square_step(map_array,step_size,fzy,cords)
         step(map_array,{x: step_size[:x] / 2, y: step_size[:y] / 2}, fzy / 2,cords)
       end
@@ -52,8 +60,10 @@ module Map_Generator
       def square_step(map_array,step_size,fzy,cords)
         x = cords[:x1] + 2 * step_size[:x]
         y = cords[:y1] + 2 * step_size[:y]
+        puts "%s,%s|%s,%s" % [x,y,cords[:x2],cords[:y2]]
         while x < cords[:x2] do
-          while y < cords[:x2] do
+          while y < cords[:y2] do
+            puts "%s,%s|%s,%s" % [x,y,cords[:x2],cords[:y2]]
             a,b,c,_ = get_corner_values(map_array,x,y,step_size)
             e = map_array[x - step_size[:x] / 2][y - step_size[:y] / 2]
             map_array[x - step_size[:x]][y - step_size[:y] / 2] = 

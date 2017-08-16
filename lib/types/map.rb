@@ -7,7 +7,7 @@ module Map_Generator
       fields tile_atlas: Tile
 
       field :size_x, type: Integer, default: 25
-      field :size_y, type: Integer, default: 25
+      field :size_y, type: Integer, default: 50
       field :max_height, type: Integer, default: 256
       field :height_Map, type: Integer, container: Array, accessors: false, default: -> {
         Array.new(@size_x,Array.new(@size_y,0))
