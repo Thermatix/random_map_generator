@@ -24,15 +24,8 @@ module Map_Generator
       end
 
       def step(map_array,level,fzy,cords)
-        puts @step 
-        map_array.display.each do |row|
-          puts row.join('')
-        end
-        @step += 1
         return map_array unless level[:x] > 0 && level[:y] > 0
-        puts "diamond"
         diamond_step(map_array,level,fzy,cords)
-        puts "square"
         square_step(map_array,level,fzy,cords)
         step(map_array,{x: level[:x] / 2, y: level[:y] / 2}, fzy / 2,cords)
       end
