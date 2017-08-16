@@ -60,8 +60,8 @@ module Map_Generator
               Mean(a, c + e + map_array[x - 3 * step_size[:x] / 2][y - step_size[:y] / 2]) + fzy
             map_array[x - step_size[:x] / 2][y - step_size[:y]] = 
               Mean(a + b + e + map_array[x - step_size[:x] / 2][y - 3 * step_size[:y] / 2]) + fzy
-            x += 2 * step_size
-            y += 2 * step_size
+            x += 2 * step_size[:x]
+            y += 2 * step_size[:y]
           end
         end
       end
