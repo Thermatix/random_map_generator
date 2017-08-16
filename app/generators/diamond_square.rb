@@ -5,7 +5,7 @@ module Map_Generator
       
       def main(map_array)
         ground_level = map_array.max_height / 4
-        fuzzy = map_array.max_height / 3
+        fuzzy = map_array.max_height / 4
         level = {
           x: map_array.size_x - 1,
           y: map_array.size_y - 1
