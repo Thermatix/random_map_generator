@@ -7,6 +7,4 @@ require 'types/biome'
 require 'types/map'
 require 'generators/diamond_square'
 
-Map_Generator::Height_Map.main(Map_Generator::Types::Map.create).display.each do |row|
-  puts row.join('')
-end
+Map_Generator::Height_Map.main(Map_Generator::Types::Map.create).display

@@ -22,16 +22,21 @@ module Map_Generator
     end
 
     def display
-      char = ' '
+      colorise.each do |row|
+        puts row.join('')
+      end
+    end
+
+    def colorise
       @height_Map.map do |row|
         row.map do |col|
           case true
           when col > 64
-            ','.colorize(:white).on_light_green
+            ' '.colorize(:white).on_light_green
           when col > 32
             ','.colorize(:light_green).on_green
           when col > 16
-            char.colorize(:yellow).on_yellow
+            '\\'.colorize(:light_yellow).on_yellow
           else
             '~'.colorize(:white).on_light_blue
           end
