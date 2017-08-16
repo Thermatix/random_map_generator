@@ -41,8 +41,10 @@ module Map_Generator
         x = cords[:x1] + level[:x]
         y = cords[:y1] + level[:y]
         while x < cords[:x2] && y < cords[:y2] do
+					puts "d(%s):" % [x]
+					map_array.display_row(x)
           avg = Mean(get_corner_values(map_array,x,y,level))
-          map_array[x - level[:x] / 2][y - level[:y] / 2] = avg + fzy
+          map_array[x - level[:x] / 2][y - level[:y] / 2] = avg + rand_value(avg)
           x += level[:x]
           y += level[:y]
         end
@@ -52,12 +54,14 @@ module Map_Generator
         x = cords[:x1] + 2 * level[:x]
         y = cords[:y1] + 2 * level[:y]
         while x < cords[:x2] &&  y < cords[:y2] do
+					puts "d(%s):" % [x]
+					map_array.display_row(x)
           a,b,c,_ = get_corner_values(map_array,x,y,level)
           e = map_array[x - level[:x] / 2][y - level[:y] / 2]
           map_array[x - level[:x]][y - level[:y] / 2] = 
-            Mean(a, c + e + map_array[x - 3 * level[:x] / 2][y - level[:y] / 2]) + fzy
+						Mean(a, c + e + map_array[x - 3 * level[:x] / 2][y - level[:y] / 2]) + rand_value(e,fzy)
           map_array[x - level[:x] / 2][y - level[:y]] = 
-            Mean(a + b + e + map_array[x - level[:x] / 2][y - 3 * level[:y] / 2]) + fzy
+            Mean(a + b + e + map_array[x - level[:x] / 2][y - 3 * level[:y] / 2]) +  rand_value(e,fzy)
           x += 2 * level[:x]
           y += 2 * level[:y]
         end
