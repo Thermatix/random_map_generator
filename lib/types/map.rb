@@ -3,11 +3,12 @@ module Map_Generator
   module Types
     class Map
       include Format    
+      include Enumerable
       fields size_x: Integer,size_y: Integer, max_height: Integer
       fields tile_atlas: Tile
 
-      field :size_x, type: Integer, default: 15
-      field :size_y, type: Integer, default: 30
+      field :size_x, type: Integer, default: 20
+      field :size_y, type: Integer, default: 40
       field :max_height, type: Integer, default: 256
       field :height_map, type: Integer, container: Array, accessors: false, default: -> {
         Array.new(@size_x) {Array.new(@size_y,0)}
@@ -19,6 +20,10 @@ module Map_Generator
 
     def []=(index,val)
       @height_map[index] = val
+    end
+
+    def each(&block)
+      @height_map.each(&block)
     end
 
     def display
@@ -40,11 +45,11 @@ module Map_Generator
     def colorise_row(row)
       row.map do |col|
         case true
-          when col > 64
-            ' '.colorize(:white).on_light_green
           when col > 32
-            ','.colorize(:light_green).on_green
+            ' '.colorize(:white).on_light_green
           when col > 16
+            ','.colorize(:light_green).on_green
+          when col > 8
             '\\'.colorize(:light_yellow).on_yellow
           else
             '~'.colorize(:white).on_light_blue
