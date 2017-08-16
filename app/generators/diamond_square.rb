@@ -47,32 +47,26 @@ module Map_Generator
       def diamond_step(map_array,level,fzy,cords)
         x = cords[:x1] + level[:x]
         y = cords[:y1] + level[:y]
-        while x < cords[:x2] do
-          while y < cords[:y2] do
-            avg = Mean(get_corner_values(map_array,x,y,level))
-            map_array[x - level[:x] / 2][y - level[:y] / 2] = avg + fzy
-            x += level[:x]
-            y += level[:y]
-          end
+        while x < cords[:x2] && y < cords[:y2] do
+          avg = Mean(get_corner_values(map_array,x,y,level))
+          map_array[x - level[:x] / 2][y - level[:y] / 2] = avg + fzy
+          x += level[:x]
+          y += level[:y]
         end
       end
 
       def square_step(map_array,level,fzy,cords)
         x = cords[:x1] + 2 * level[:x]
         y = cords[:y1] + 2 * level[:y]
-        puts "%s,%s|%s,%s" % [x,y,cords[:x2],cords[:y2]]
-        while x < cords[:x2] do
-          while y < cords[:y2] do
-            puts "%s,%s|%s,%s" % [x,y,cords[:x2],cords[:y2]]
-            a,b,c,_ = get_corner_values(map_array,x,y,level)
-            e = map_array[x - level[:x] / 2][y - level[:y] / 2]
-            map_array[x - level[:x]][y - level[:y] / 2] = 
-              Mean(a, c + e + map_array[x - 3 * level[:x] / 2][y - level[:y] / 2]) + fzy
-            map_array[x - level[:x] / 2][y - level[:y]] = 
-              Mean(a + b + e + map_array[x - level[:x] / 2][y - 3 * level[:y] / 2]) + fzy
-            x += 2 * level[:x]
-            y += 2 * level[:y]
-          end
+        while x < cords[:x2] &&  y < cords[:y2] do
+          a,b,c,_ = get_corner_values(map_array,x,y,level)
+          e = map_array[x - level[:x] / 2][y - level[:y] / 2]
+          map_array[x - level[:x]][y - level[:y] / 2] = 
+            Mean(a, c + e + map_array[x - 3 * level[:x] / 2][y - level[:y] / 2]) + fzy
+          map_array[x - level[:x] / 2][y - level[:y]] = 
+            Mean(a + b + e + map_array[x - level[:x] / 2][y - 3 * level[:y] / 2]) + fzy
+          x += 2 * level[:x]
+          y += 2 * level[:y]
         end
       end
 
