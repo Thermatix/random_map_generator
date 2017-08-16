@@ -23,7 +23,7 @@ module Map_Generator
       end
 
       def step(map_array,step_size,fzy,cords)
-        return map_array unless step_size[:x] > 0 && step_size[:y > 0]
+        return map_array unless step_size[:x] > 0 && step_size[:y] > 0
         diamond_step(map_array,step_size,fzy,cords)
         square_step(map_array,step_size,fzy,cords)
         step(map_array,{x: step_size[:x] / 2, y: step_size[:y] / 2}, fzy / 2,cords)
