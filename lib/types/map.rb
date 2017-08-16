@@ -33,7 +33,7 @@ module Map_Generator
           when col > 64
             ','.colorize(:light_green).on_green
           else
-            char.colorize(:light_blue).on_light_blue
+            '~'.colorize(:white).on_light_blue
           end
         end
       end
