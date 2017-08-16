@@ -6,7 +6,10 @@ module Map_Generator
       def main(map_array)
         ground_level = map_array.max_height / 4
         fuzzy = map_array.max_height / 8
-        step_size = map_array.size_x - 1
+        step_size = {
+          x: map_array.size_x - 1,
+          y: map_array.size_y - 1
+        }
         fzy = rand_value(ground_level,fuzzy)
         seed_corner(map_array,ground_level,fuzzy)
         cords = {
@@ -20,10 +23,10 @@ module Map_Generator
       end
 
       def step(map_array,step_size,fzy,cords)
-        return map_array unless step_size > 1
+        return map_array unless step_size[:x] > 0 && step_size[:y > 0]
         diamond_step(map_array,step_size,fzy,cords)
         square_step(map_array,step_size,fzy,cords)
-        step(map_array,step_size / 2, fzy / 2,cords)
+        step(map_array,{x: step_size[:x] / 2, y: step_size[:y] / 2}, fzy / 2,cords)
       end
 
       def seed_corner(map_array,height,fuzzy)
@@ -34,29 +37,29 @@ module Map_Generator
       end
 
       def diamond_step(map_array,step_size,fzy,cords)
-        x = cords[:x1] + step_size
-        y = cords[:y1] + step_size
+        x = cords[:x1] + step_size[:x]
+        y = cords[:y1] + step_size[:y]
         while x < cords[:x2] do
           while y < cords[:y2] do
             avg = Mean(get_corner_values(map_array,x,y,step_size))
-            map_array[x - step_size / 2][y - step_size / 2] = avg + fzy
-            x += step_size
-            y += step_size
+            map_array[x - step_size[:x] / 2][y - step_size[:y] / 2] = avg + fzy
+            x += step_size[:x]
+            y += step_size[:y]
           end
         end
       end
 
       def square_step(map_array,step_size,fzy,cords)
-        x = cords[:x1] + 2 * step_size
-        y = cords[:y1] + 2 * step_size
+        x = cords[:x1] + 2 * step_size[:x]
+        y = cords[:y1] + 2 * step_size[:y]
         while x < cords[:x2] do
           while y < cords[:x2] do
             a,b,c,_ = get_corner_values(map_array,x,y,step_size)
-            e = map_array[x - step_size / 2][y - step_size / 2]
-            map_array[x - step_size][y - step_size / 2] = 
-              Mean(a, c + e + map_array[x - 3 * step_size / 2][y - step_size / 2]) + fzy
-            map_array[x - step_size / 2][y - step_size] = 
-              Mean(a + b + e + map_array[x - step_size / 2][y - 3 * step_size / 2]) + fzy
+            e = map_array[x - step_size[:x] / 2][y - step_size[:y] / 2]
+            map_array[x - step_size[:x]][y - step_size[:y] / 2] = 
+              Mean(a, c + e + map_array[x - 3 * step_size[:x] / 2][y - step_size[:y] / 2]) + fzy
+            map_array[x - step_size[:x] / 2][y - step_size[:y]] = 
+              Mean(a + b + e + map_array[x - step_size[:x] / 2][y - 3 * step_size[:y] / 2]) + fzy
             x += 2 * step_size
             y += 2 * step_size
           end
@@ -68,9 +71,9 @@ module Map_Generator
       end
 
       def get_corner_values(map_array,x,y,step_size)
-        (((([] << map_array[x - step_size][y - step_size]) <<
-          map_array[x][y - step_size]) <<
-          map_array[x - step_size][y]) <<
+        (((([] << map_array[x - step_size[:x]][y - step_size[:y]]) <<
+          map_array[x][y - step_size[:y]]) <<
+          map_array[x - step_size[:x]][y]) <<
           map_array[x][x])
       end
 
