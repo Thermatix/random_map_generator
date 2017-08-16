@@ -26,11 +26,11 @@ module Map_Generator
       @height_Map.map do |row|
         row.map do |col|
           case true
-          when col > 16
+          when col > 8
             char.colorize(:yellow).on_yellow
-          when col > 32
+          when col > 16
             ','.colorize(:green).on_dark_green
-          when col > 64
+          when col > 32
             ','.colorize(:light_green).on_green
           else
             '~'.colorize(:white).on_light_blue
