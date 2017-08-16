@@ -36,34 +36,35 @@ module Map_Generator
       def diamond_step(map_array,step_size,fzy,cords)
         x = cords[:x1] + step_size
         y = cords[:y1] + step_size
-        while x > 0 do
-          while y > 0 do
+        while x < cords[:x2] do
+          while y < cords[:y2] do
             avg = Mean(get_corner_values(map_array,x,y,step_size))
             map_array[x - step_size / 2][y - step_size / 2] = avg + fzy
-            x -= step_size
-            y -= step_size
+            x += step_size
+            y += step_size
           end
         end
       end
 
       def square_step(map_array,step_size,fzy,cords)
-        x = cords[:x1] + 2 / step_size
-        y = cords[:y1] + 2 / step_size
-        while x > 0 do
-          while y > 0 do
+        x = cords[:x1] + 2 * step_size
+        y = cords[:y1] + 2 * step_size
+        while x < cords[:x2] do
+          while y < cords[:x2] do
             a,b,c,_ = get_corner_values(map_array,x,y,step_size)
             e = map_array[x - step_size / 2][y - step_size / 2]
             map_array[x - step_size][y - step_size / 2] = 
               Mean(a, c + e + map_array[x - 3 * step_size / 2][y - step_size / 2]) + fzy
             map_array[x - step_size / 2][y - step_size] = 
               Mean(a + b + e + map_array[x - step_size / 2][y - 3 * step_size / 2]) + fzy
-
+            x += 2 * step_size
+            y += 2 * step_size
           end
         end
       end
 
-      def rand_value(base=0,fuzzy=3)
-        rand((base - fuzzy)..(base + fuzzy))
+      def rand_value(base=0,fuzzy=(base / 4),celling=nil)
+        rand((base - fuzzy)..(celling || base + fuzzy))
       end
 
       def get_corner_values(map_array,x,y,step_size)
