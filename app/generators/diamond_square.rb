@@ -30,8 +30,8 @@ module Map_Generator
         cords = {
           x1:0,
           y1:0,
-          x2:map_array.size_x - 1,
-          y2:map_array.size_y - 1
+          x2:map_array.size_x,
+          y2:map_array.size_y
         }
         @step = 1
         step(map_array,level,fzy,cords)
