@@ -5,16 +5,33 @@ module Map_Generator
 
 			Shapes = {
 				diamond: {
-					top:		->	(map_array,x,y,level) {map_array[x][Min(){y - level[:y]}]},
-					left:		->	(map_array,x,y,level) {map_array[Min(){x - level[:x]}][y]},
-					right:	->	(map_array,x,y,level) {map_array[Max(map_array.size_x - 1){x + level[:x]}][y]},
-					bottom: ->	(map_array,x,y,level) {map_array[x][Max(map_array.size_y - 1){y + level[:y]}]}
+					top:		->	(map_array,x,y,level) {
+						puts x
+						map_array[Max(map_array.mx){x}][Min(){y - level[:y]}]
+					},
+					left:		->	(map_array,x,y,level) {
+						map_array[Min(){x - level[:x]}][Max(map_array.my){y}]
+					},
+					bottom: ->	(map_array,x,y,level) {
+						map_array[Max(map_array.mx){x}][Max(map_array.my ){y + level[:y]}]
+					},
+					right:	->	(map_array,x,y,level) {
+						map_array[Max(map_array.mx){x + level[:x]}][Max(map_array.my) {y}]
+					}
 				},
 				square: {
-					tp_left:		-> (map_array,x,y,level) {map_array[Min(){x - level[:x]}][Min(){y - level[:y]}]},
-					tp_right:		-> (map_array,x,y,level) {map_array[Max(map_array.size_x - 1){x + level[:x]}][Min(){y - level[:y]}]},
-					btm_left:		-> (map_array,x,y,level) {map_array[Min(){x - level[:x]}][Max(map_array.size_y - 1){y + level[:y]}]},
-					btm_right:	-> (map_array,x,y,level) {map_array[Max(map_array.size_x - 1){x + level[:x]}][Max(map_array.size_y - 1){y + level[:y]}]}
+					tp_left:		-> (map_array,x,y,level) {
+						map_array[Min(){x - level[:x]}][Min(){y - level[:y]}]
+					},
+					tp_right:		-> (map_array,x,y,level) {
+						map_array[Max(map_array.mx){x + level[:x]}][Min(){y - level[:y]}]
+					},
+					btm_left:		-> (map_array,x,y,level) {
+						map_array[Min(){x - level[:x]}][Max(map_array.my){y + level[:y]}]
+					},
+					btm_right:	-> (map_array,x,y,level) {
+						map_array[Max(map_array.mx){x + level[:x]}][Max(map_array.my){y + level[:y]}]
+					}
 				}
 			}
 
@@ -50,34 +67,48 @@ module Map_Generator
 
       def seed_corner(map_array,height,fuzzy)
         map_array[0][0] = rand_value(height,fuzzy,height)
-        map_array[map_array.size_x - 1][0] = rand_value(height,fuzzy,height)
-        map_array[0][map_array.size_y - 1] = rand_value(height,fuzzy,height)
-        map_array[map_array.size_x - 1][map_array.size_y - 1] = rand_value(height,fuzzy,height)
+        map_array[map_array.mx][0] = rand_value(height,fuzzy,height)
+        map_array[0][map_array.my] = rand_value(height,fuzzy,height)
+        map_array[map_array.mx][map_array.my] = rand_value(height,fuzzy,height)
       end
 
 			def diamond_step(map_array,level,fzy,cords)
-				x = level[:x]
-				while x < cords[:x2] do
-					y = (x + level[:y]) % map_array.size_y
-					while y < cords[:y2] do
-						avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
-						map_array[x][y] = avg + rand_value(avg,fzy,map_array.max_height)
+				x = 0
+				# while x < cords[:x2] do
+				loop do
+					y = 0
+					# while y < cords[:y2] do
+					loop do
+						puts "%s,%s" % [x,y]
+						crnv = get_shape_values(:diamond,map_array,x,y,level)
+						puts crnv.to_s
+						avg = Mean(crnv)
+						map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg,fzy,map_array.max_height)
 						y += level[:y]
+						break if y > cords[:y2]
 					end
 					x += level[:x]
+					break if x > cords[:x2]
 				end
 			end
 		
 			def square_step(map_array,level,fzy,cords)
-				x = level[:x]
-				while x < cords[:x2] do
-					y = level[:y]
-					while y < cords[:y2] do
-						avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
-						map_array[x][y] = avg + rand_value(avg,fzy,map_array.max_height)
+				x = 0
+				# while x < cords[:x2] do
+				loop do
+					y = 0
+					# while y < cords[:y2] do
+					loop do
+						puts "%s,%s" % [x,y]
+						crnv = get_shape_values(:square,map_array,x,y,level)
+						puts crnv.to_s
+						avg = Mean(crnv)
+						map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg,fzy,map_array.max_height)
 						y += level[:y]
+						break if y > cords[:y2]
 					end
 					x += level[:x]
+					break if x > cords[:x2]
 				end
 			end
 

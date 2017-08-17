@@ -9,6 +9,8 @@ module Map_Generator
 
       field :size_x, type: Integer, default: 20
       field :size_y, type: Integer, default: 40
+      field :mx,  type: Integer, default: -> {@size_x - 1}
+      field :my,  type: Integer, default: -> {@size_y - 1}
       field :max_height, type: Integer, default: 256
       field :height_map, type: Integer, container: Array, accessors: false, default: -> {
         Array.new(@size_x) {Array.new(@size_y,0)}
