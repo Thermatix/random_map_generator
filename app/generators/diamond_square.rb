@@ -41,10 +41,8 @@ module Map_Generator
       def step(map_array,level,fzy,cords)
         return map_array unless level[:x] > 0 && level[:y] > 0
 				map_array.display
-				puts "diamond"
         diamond_step(map_array,level,fzy,cords)
 				map_array.display
-				puts "diamond"
         square_step(map_array,level,fzy,cords)
 				map_array.display
         step(map_array,{x: level[:x] / 2, y: level[:y] / 2}, fzy / 2,cords)
@@ -76,7 +74,6 @@ module Map_Generator
 					y = level[:y]
 					while y < cords[:y2] do
 						avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
-						puts "%s,%s" % [avg,fzy]
 						map_array[x][y] = avg + rand_value(avg,fzy,map_array.max_height)
 						y += level[:y]
 					end
