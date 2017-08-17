@@ -75,7 +75,7 @@ module Map_Generator
 					y = 0
 					loop do
 						avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
-						map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg,fzy,map_array.max_height)
+						map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg,fzy,map_array.max_height / 32)
 						y += level[:y]
 						break if y > cords[:y2]
 					end
@@ -90,7 +90,7 @@ module Map_Generator
 					y = 0
 					loop do
 						avg = Mean(get_shape_values(:square,map_array,x,y,level))
-						map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg,fzy,map_array.max_height)
+						map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg,fzy,map_array.max_height / 32 )
 						y += 2 * level[:y]
 						break if y > cords[:y2]
 					end
