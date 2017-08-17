@@ -6,7 +6,6 @@ module Map_Generator
 			Shapes = {
 				diamond: {
 					top:		->	(map_array,x,y,level) {
-						puts x
 						map_array[Max(map_array.mx){x}][Min(){y - level[:y]}]
 					},
 					left:		->	(map_array,x,y,level) {
@@ -43,6 +42,7 @@ module Map_Generator
           y: (map_array.size_y ) / 2
         }
         fzy = rand_value(ground_level,fuzzy)
+				puts fzy
         seed_corner(map_array,ground_level,fuzzy)
         cords = {
           x1:0,
@@ -57,11 +57,8 @@ module Map_Generator
 
       def step(map_array,level,fzy,cords)
         return map_array unless level[:x] > 0 && level[:y] > 0
-				map_array.display
         diamond_step(map_array,level,fzy,cords)
-				map_array.display
         square_step(map_array,level,fzy,cords)
-				map_array.display
         step(map_array,{x: level[:x] / 2, y: level[:y] / 2}, fzy / 2,cords)
       end
 
@@ -74,15 +71,10 @@ module Map_Generator
 
 			def diamond_step(map_array,level,fzy,cords)
 				x = 0
-				# while x < cords[:x2] do
 				loop do
 					y = 0
-					# while y < cords[:y2] do
 					loop do
-						puts "%s,%s" % [x,y]
-						crnv = get_shape_values(:diamond,map_array,x,y,level)
-						puts crnv.to_s
-						avg = Mean(crnv)
+						avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
 						map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg,fzy,map_array.max_height)
 						y += level[:y]
 						break if y > cords[:y2]
@@ -94,20 +86,15 @@ module Map_Generator
 		
 			def square_step(map_array,level,fzy,cords)
 				x = 0
-				# while x < cords[:x2] do
 				loop do
 					y = 0
-					# while y < cords[:y2] do
 					loop do
-						puts "%s,%s" % [x,y]
-						crnv = get_shape_values(:square,map_array,x,y,level)
-						puts crnv.to_s
-						avg = Mean(crnv)
+						avg = Mean(get_shape_values(:square,map_array,x,y,level))
 						map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg,fzy,map_array.max_height)
-						y += level[:y]
+						y += 2 * level[:y]
 						break if y > cords[:y2]
 					end
-					x += level[:x]
+					x += 2 * level[:x]
 					break if x > cords[:x2]
 				end
 			end
