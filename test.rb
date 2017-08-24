@@ -1,5 +1,6 @@
 require './lib/auto_loader'
 require 'helpers/math'
+require 'helpers/dot'
 require 'format'
 require 'generator'
 require 'types/tiles'

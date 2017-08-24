@@ -1,5 +1,7 @@
+#!/usr/local/bin/ruby -w
 require './lib/auto_loader'
 require 'helpers/math'
+require 'helpers/dot'
 require 'format'
 require 'generator'
 require 'types/tiles'
@@ -7,4 +9,5 @@ require 'types/biome'
 require 'types/map'
 require 'generators/diamond_square'
 
-puts  Map_Generator::Height_Map.main(Map_Generator::Types::Map.create).height_map.to_s
+Map_Generator::Height_Map.main(Map_Generator::Types::Map.create).display
+
