@@ -35,7 +35,7 @@ module Map_Generator
 			}
 
       def main(map_array)
-        ground_level = map_array.max_height / 4
+        ground_level = map_array.max_height / 8
         fuzzy = map_array.max_height / 8
         level = {
           x: (map_array.size_x ) / 2,
@@ -69,61 +69,32 @@ module Map_Generator
         map_array[map_array.mx][map_array.my] = rand_value(height,fuzzy,height)
       end
 
-			def diamond_step(map_array,level,fzy,cords)
-				x = 0
-				loop do
-					y = 0
-					loop do
-						avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
-						map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg,fzy,map_array.max_height / 32)
-						y += level[:y]
-						break if y > cords[:y2]
-					end
-					x += level[:x]
-					break if x > cords[:x2]
-				end
-			end
-		
-			def square_step(map_array,level,fzy,cords)
-				x = 0
-				loop do
-					y = 0
-					loop do
-						avg = Mean(get_shape_values(:square,map_array,x,y,level))
-						map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg,fzy,map_array.max_height / 32 )
-						y += 2 * level[:y]
-						break if y > cords[:y2]
-					end
-					x += 2 * level[:x]
-					break if x > cords[:x2]
-				end
-			end
 
-      # def diamond_step(map_array,level,fzy,cords)
-      #   x = cords[:x1] + level[:x]
-      #   y = cords[:y1] + level[:y]
-      #   while x < cords[:x2] && y < cords[:y2] do
-			# 		avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
-      #     map_array[x - level[:x] / 2][y - level[:y] / 2] = avg + rand_value(avg)
-      #     x += level[:x]
-      #     y += level[:y]
-			#   end
-      # end
-      #
-      # def square_step(map_array,level,fzy,cords)
-      #   x = cords[:x1] + 2 * level[:x]
-      #   y = cords[:y1] + 2 * level[:y]
-      #   while x < cords[:x2] &&  y < cords[:y2] do
-			# 		a,b,c,_ = get_shape_values(:square,map_array,x,y,level)
-      #     e = map_array[x - level[:x] / 2][y - level[:y] / 2]
-      #     map_array[x - level[:x]][y - level[:y] / 2] = 
-			# 			Mean(a, c + e + map_array[x - 3 * level[:x] / 2][y - level[:y] / 2]) + rand_value(e,fzy)
-      #     map_array[x - level[:x] / 2][y - level[:y]] = 
-      #       Mean(a + b + e + map_array[x - level[:x] / 2][y - 3 * level[:y] / 2]) +  rand_value(e,fzy)
-      #     x +=  level[:x]
-      #     y +=  level[:y]
-      #   end
-      # end
+      def diamond_step(map_array,level,fzy,cords)
+        iteration(cords,level) do |x,y|
+            avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
+            map_array[x][y] = avg + rand_value(avg)
+        end
+      end
+
+      def square_step(map_array,level,fzy,cords)
+        iteration(cords,level,{x: level[:x] / 2,y: level[:y] / 2}) do |x,y|
+          avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
+          map_array[x][y] = avg + rand_value(avg)
+        end
+      end
+
+      def iteration(cords,level,h_levels=level)
+        unless h_levels[:x] < 1
+          (cords[:x2] / level[:x]).times do |xs,x=(xs * level[:x])|
+            unless h_levels[:y] < 1
+              (cords[:y2] / level[:y]).times do |ys,y=(ys * level[:y])|
+                yield(x,y)
+              end
+            end
+          end
+        end
+      end
 
       def rand_value(base=0,fuzzy=(base / 4),celling=nil)
 				if celling && base > celling
