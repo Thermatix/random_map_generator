@@ -79,7 +79,7 @@ module Map_Generator
 
       def square_step(map_array,level,fzy,cords)
         iteration(cords,{x: level[:x] * 2,y: level[:y] * 2}) do |x,y|
-          avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
+          avg = Mean(get_shape_values(:square,map_array,x,y,level))
           map_array[x][y] = avg + rand_value(avg)
         end
       end
