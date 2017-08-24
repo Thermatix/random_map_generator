@@ -7,8 +7,8 @@ module Map_Generator
       fields size_x: Integer,size_y: Integer, max_height: Integer
       fields tile_atlas: Tile
 
-      field :size_x, type: Integer, default: 20
-      field :size_y, type: Integer, default: 40
+      field :size_x, type: Integer, default: 25
+      field :size_y, type: Integer, default: 50
       field :mx,  type: Integer, default: -> {@size_x - 1}
       field :my,  type: Integer, default: -> {@size_y - 1}
       field :max_height, type: Integer, default: 256
@@ -45,7 +45,7 @@ module Map_Generator
     end
 
     def colorise_row(row)
-      row.map do |col|
+      row.map do |c,col=(c||0)|
         case true
           when col > 32
             ' '.colorize(:white).on_light_green
