@@ -7,7 +7,7 @@ module Map_Generator
       end
 
       def Sum(values)
-        values.inject(0.0) { |result, el| result + el }
+        values.inject(0.0) { |result, el| (result||0) + (el||0) }
       end
 
       def Mean(*values)
@@ -24,6 +24,7 @@ module Map_Generator
 
       def Min(min=0)
         val = yield
+        puts "%s/%s" % [val,min]
         val < min ? min : val
       end
 
