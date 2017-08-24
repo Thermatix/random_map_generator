@@ -76,21 +76,21 @@ module Map_Generator
       def diamond_step(map_array,level,fzy,cords)
         iteration(cords,level) do |x,y|
           avg = Mean(get_shape_values(:square,map_array,x,y,level))
-          map_array[x][y] = avg + rand_value(avg)
+          map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg)
         end
       end
 
       def square_step(map_array,level,fzy,cords)
-        iteration(cords,level) do |x,y,x_off=(x + (level[:x] * 2)),y_off=(y + (level[:y] * 2))|
-          avg = Mean(get_shape_values(:diamond,map_array,x,y,level))
+        iteration(cords,level,0) do |x,y,x_off=(x + (level[:x] / 2)),y_off=(y + (level[:y] / 2))|
+          avg = Mean(get_shape_values(:diamond,map_array,x_off,y_off,level))
           map_array[Max(map_array.mx){x_off}][Max(map_array.my){y_off}] = avg + rand_value(avg)
         end
       end
 
-      def iteration(cords,level)
+      def iteration(cords,level,start=1)
         unless level.x < 1 || level.y < 1
-          (cords.x2 / level.x).times do |xs,x=(xs * level[:x])|
-            (cords.y2 / level.y).times do |ys,y=(ys * level[:y])|
+          (start..(cords.x2 / level.x)).each do |xs,x=(xs * level[:x])|
+            (start..(cords.y2 / level.y)).each do |ys,y=(ys * level[:y])|
               yield(x,y)
             end
           end
