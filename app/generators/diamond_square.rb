@@ -43,7 +43,6 @@ module Map_Generator
           y: (map_array.size_y ) / 2
         })
         fzy = rand_value(ground_level,fuzzy)
-				puts fzy
         seed_corner(map_array,ground_level,fuzzy)
         cords = Dot({
           x1:0,
