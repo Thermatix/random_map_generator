@@ -35,8 +35,8 @@ module Map_Generator
 			}
 
       def main(map_array)
-        ground_level = map_array.max_height / 8
-        fuzzy = map_array.max_height / 8
+        ground_level = map_array.max_height / 64
+        fuzzy = map_array.max_height / 32
         level = {
           x: (map_array.size_x ) / 2,
           y: (map_array.size_y ) / 2
@@ -78,7 +78,7 @@ module Map_Generator
       end
 
       def square_step(map_array,level,fzy,cords)
-        iteration(cords,{x: level[:x] * 2,y: level[:y] * 2}) do |x,y|
+        iteration(cords,{x: level[:x] / 2,y: level[:y] / 2}) do |x,y|
           avg = Mean(get_shape_values(:square,map_array,x,y,level))
           map_array[x][y] = avg + rand_value(avg)
         end
