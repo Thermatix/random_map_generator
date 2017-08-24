@@ -38,21 +38,19 @@ module Map_Generator
       def main(map_array)
         ground_level = map_array.max_height / 8
         fuzzy = map_array.max_height / 16 
-        level = {
+        level = Dot({
           x: (map_array.size_x ) / 2,
           y: (map_array.size_y ) / 2
-        }
-        level.extend(Dot(*level.keys))
+        })
         fzy = rand_value(ground_level,fuzzy)
 				puts fzy
         seed_corner(map_array,ground_level,fuzzy)
-        cords = {
+        cords = Dot({
           x1:0,
           y1:0,
           x2:map_array.size_x,
           y2:map_array.size_y
-        }
-        cords.extend(Dot(*cords.keys))
+        })
         @step = 1
         step(map_array,level,fzy,cords)
 
