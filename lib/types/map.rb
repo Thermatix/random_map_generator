@@ -7,8 +7,8 @@ module Map_Generator
       fields size_x: Integer,size_y: Integer, max_height: Integer
       fields tile_atlas: Tile
 
-      field :size_x, type: Integer, default: 30
-      field :size_y, type: Integer, default: 30
+      field :size_x, type: Integer, default: 40
+      field :size_y, type: Integer, default: 40
       field :mx,  type: Integer, default: -> {@size_x - 1}
       field :my,  type: Integer, default: -> {@size_y - 1}
       field :max_height, type: Integer, default: 256
@@ -47,18 +47,18 @@ module Map_Generator
     def colorise_row(row)
       row.map do |c,col=(c||0)|
         case true
-          when col > 40
-            '~'.colorize(:light_white).on_light_white
-          when col > 30
-            '\\'.colorize(:light_white).on_white
-          when col > 25
-            ' '.colorize(:white).on_light_green
-          when col > 20
-            ','.colorize(:light_green).on_green
-          when col > 8
-            '\\'.colorize(:light_yellow).on_yellow
-          else
-            '~'.colorize(:white).on_light_blue
+        when col > (@max_height * 0.99).abs
+          '~'.colorize(:light_white).on_light_white
+        when col > (@max_height * 0.80).abs
+          '\\'.colorize(:light_white).on_white
+        when col > (@max_height * 0.50).abs
+         (rand(0..9) > 2 ? ' ' : '🌲').colorize(:white).on_light_green
+        when col > (@max_height * 0.30).abs
+          ','.colorize(:light_green).on_green
+        when col > (@max_height * 0.20).abs
+          (rand(0..9) > 2 ? '\\' : '🌴').colorize(:light_yellow).on_yellow
+        else
+          (rand(0..9) > 5 ? '~' : '⌇').colorize(:white).on_light_blue
         end
       end
     end
