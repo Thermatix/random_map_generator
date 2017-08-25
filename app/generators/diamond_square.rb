@@ -71,10 +71,8 @@ module Map_Generator
       end
 
       def step(map_array,level,fzy,cords)
-        map_array.display
         return map_array unless level.x > 0 && level.y > 0
         diamond_step(map_array,level,fzy,cords)
-        map_array.display
         square_step(map_array,level,fzy,cords)
         level.x /= 2
         level.y /= 2
