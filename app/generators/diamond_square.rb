@@ -51,8 +51,8 @@ module Map_Generator
       }
 
       def main(map_array)
-        ground_level = map_array.max_height / 8
-        fuzzy = map_array.max_height / 16 
+        ground_level = map_array.max_height / 16
+        fuzzy = map_array.max_height / 8
         level = Dot({
           x: (map_array.mx) / 2,
           y: (map_array.my) / 2
@@ -74,6 +74,7 @@ module Map_Generator
         map_array.display
         return map_array unless level.x > 0 && level.y > 0
         diamond_step(map_array,level,fzy,cords)
+        map_array.display
         square_step(map_array,level,fzy,cords)
         level.x /= 2
         level.y /= 2
@@ -89,12 +90,9 @@ module Map_Generator
 
 
       def diamond_step(map_array,level,fzy,cords)
-        # iteration(cords,level) do |x,y|
-        (1..(cords.x2 / level.x)).each do |xs,x=(xs * level.x)|
-          (1..(cords.y2 / level.y)).each do |ys,y=(xs * level.x)|
+        iteration(cords,level) do |x,y|
             avg = Mean(get_shape_values(:square,map_array,x,y,level))
             map_array[Max(map_array.mx){x}][Max(map_array.my){y}] = avg + rand_value(avg)
-          end
         end
       end
 
