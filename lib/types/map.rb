@@ -50,15 +50,15 @@ module Map_Generator
         when col > (@max_height * 0.99).abs
           '~'.colorize(:light_white).on_light_white
         when col > (@max_height * 0.80).abs
-          '\\'.colorize(:light_white).on_white
-        when col > (@max_height * 0.50).abs
-         (rand(0..9) > 2 ? ' ' : ',').colorize(:white).on_light_green
+          '∫'.colorize(:light_white).on_white
+        whe∫n col > (@max_height * 0.50).abs
+         (r∫and(0..9) > 2 ? ' ' : '؇').colorize(:white).on_light_green
         when col > (@max_height * 0.30).abs
-          (rand(0..19) > 1 ? ' '  : ',').colorize(:light_green).on_green
+          (rand(0..9) > 1 ? ' '  : '؇').colorize(:light_green).on_green
         when col > (@max_height * 0.20).abs
-          (rand(0..9) > 5 ? '~' : '⌇').colorize(:light_yellow).on_yellow
+          ( '〰' ).colorize(:light_yellow).on_yellow
         else
-          (rand(0..9) > 5 ? '~' : '⌇').colorize(:white).on_light_blue
+          ('⌇').colorize(:white).on_light_blue
         end
       end
     end
